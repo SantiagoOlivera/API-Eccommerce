@@ -6,10 +6,57 @@ var usersModel = require("../models/users");
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-  save: async function(req, res, next) {
-    var data = await usersModel.create({ name: req.body.name, user: req.body.user, password: req.body.password });
-    res.json({status: "success", message: "User added successfully!!!", data: data});      
+  signup: async function(req, res, next) {
+    //verificar si existing el usuario o el email registrado previamente
+    await usersModel.find({ 
+      user: req.body.user,
+      email: req.body.email
+    }, function(err, data) {
+      if(!data){
+        usersModel.create({ 
+          name: req.body.name,
+          lastname: req.body.lastname,
+          email: req.body.email, 
+          user: req.body.user, 
+          password: req.body.password 
+        })
+        res.json({status: "success", message: "User added successfully!!!", data: data});
+      }else{
+        res.status(200).json({status: "success", message: "Existing user name or email!!!", data: data });
+      }
+    })
   },
+    /* await usersModel.find({ 
+          user: req.body.user,
+          email: req.body.email  
+    },
+    async function(err, data) {
+      if(err){
+        res.status(200).json({status: "success", message: "Existing user name or email!!!", data: data });
+      }else{
+        var data = await usersModel.create({ 
+          name: req.body.name,
+          lastname: req.body.lastname,
+          email: req.body.email, 
+          user: req.body.user, 
+          password: req.body.password 
+        });
+        res.json({status: "success", message: "User added successfully!!!", data: data});    
+      }
+    }) */
+    //console.log(existingUser);
+    /* if(existingUser){
+      var data = await usersModel.create({ 
+        name: req.body.name,
+        lastname: req.body.lastname,
+        email: req.body.email, 
+        user: req.body.user, 
+        password: req.body.password 
+      });
+      res.json({status: "success", message: "User added successfully!!!", data: data});
+    }else{
+      res.json( { status:"error", message: "Existing user name or email!!!", data: null } );
+    } */
   login: async function(req, res, next) {
     //se le asigna a user el valor de 
     var user = await usersModel.findOne({ user: req.body.user });

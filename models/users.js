@@ -3,7 +3,18 @@ const mongoose = require('../bin/mongodb');
 const bcrypt = require('bcrypt'); 
 
 var UsersSchemna = mongoose.Schema({
-    name:String,
+    name:{
+        type:String,
+        required: true
+    },
+    lastname:{
+        type:String,
+        required: true
+    },
+    email:{
+        type:String,
+        required: true
+    },
     user:{
         type: String,
         required: true
@@ -14,7 +25,7 @@ var UsersSchemna = mongoose.Schema({
         required: true
         }
 })
-UsersSchemna.pre('save', function(next){
+UsersSchemna.pre('signup', function(next){
     this.password = bcrypt.hashSync(this.password, 10);
     next();
 });
