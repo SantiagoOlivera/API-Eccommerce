@@ -4,25 +4,27 @@ const bcrypt = require('bcrypt');
 
 var UsersSchemna = mongoose.Schema({
     name:{
-        type:String,
-        required: true
+        type: String,
+        required: [true,"The field name is required"]
     },
     lastname:{
-        type:String,
-        required: true
+        type: String,
+        required: [true,"The field lastname is required"]
     },
     email:{
-        type:String,
-        required: true
+        type: String,
+        required: [true,"The field email is required"],
+        unique: true
     },
     user:{
         type: String,
-        required: true
+        required: [true,"The field user name is required"],
+        unique: true
         },
     password:{
         type: String,
         trim: true,
-        required: true
+        required: [true,"The field password is required"]
         }
 })
 UsersSchemna.pre('signup', function(next){
