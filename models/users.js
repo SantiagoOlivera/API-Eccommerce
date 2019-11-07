@@ -27,7 +27,7 @@ var UsersSchemna = mongoose.Schema({
         required: [true,"The field password is required"]
         }
 })
-UsersSchemna.pre('signup', function(next){
+UsersSchemna.pre('save', function(next){
     this.password = bcrypt.hashSync(this.password, 10);
     next();
 });

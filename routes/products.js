@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var products = require("../controllers/products")
+var jwt = require('jsonwebtoken');
 
 /* GET home page. */
 /* router.get('/', function(req, res, next) {
@@ -11,11 +12,23 @@ var products = require("../controllers/products")
     res.render('products', { title: 'Productos', data: result });
 }); */
 
-router.get('/', products.getAll);
+router.get('/', validateUser, products.getAll);
 
 //router.get('/pdf/:productId', products.pdf);
 //router.get('/:id', products.getById);
 //router.post('/', products.save);
 //router.put('/:id', products.update);
+
+function validateUser(req, res, next) {
+    jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function(err, decoded) {
+      if (err) {
+        res.json({status:"error", message: "You have to identificate yourself" , data:null});
+      }else{
+        // add user id to request
+        req.body.userId = decoded.id;
+        next();
+      }
+    });
+}
 
 module.exports = router;

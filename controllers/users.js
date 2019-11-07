@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
   getAll: function(req, res, next) {
-      users.find({}, function(err, data){
+      usersModel.find({}, function(err, data){
       if (err) {
           next(err);
       } else {
@@ -28,19 +28,27 @@ module.exports = {
     }catch(err){
       if (err.name === 'MongoError' && err.code === 11000 && err.keyValue.user) {
         // Duplicate username
-        return res.status(422).send({ status: 'error', message: 'User already exist!' });
+        //return res.status(422).send({ status: 'error', message: 'User already exist!' });
+        return res.json({ status: 'error', message: 'User already exist!' });
       }else if(err.name === 'MongoError' && err.code === 11000 && err.keyValue.email){
-        return res.status(422).send({ status: 'error', message: 'Email already exist!' });
+        //Duplicate user email
+        //return res.status(422).send({ status: 'error', message: 'Email already exist!' });
+        return res.json({ status: 'error', message: 'Email already exist!' });
     }
     console.log(err)
     next(err);
     }
   },
   login: async function(req, res, next) {
-    //se le asigna a user el valor de 
-    var user = await usersModel.findOne({ user: req.body.user });
+      if(req.body.userOrEmail.includes('@')){
+        var user = await usersModel.findOne({ email: req.body.userOrEmail });
+      }else{
+        var user = await usersModel.findOne({ user: req.body.userOrEmail });
+      }
+    
       if (user) {
         if(bcrypt.compareSync(req.body.password, user.password)) {
+          //el secretKey debe ser declarado en el app.js
           const token = jwt.sign( { id: user._id } , req.app.get('secretKey'), { expiresIn: '1h' } );
           console.log(token, user)
           res.json( { status: "success" , message: "user found!!!", data: { user: user, token:token } } );

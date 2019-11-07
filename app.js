@@ -12,6 +12,9 @@ var productsRouter = require('./routes/products');
 
 var app = express();
 
+//Definicion de secretKey
+app.set('secretKey', 'nodeRestApi'); // jwt secret token
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -26,7 +29,12 @@ app.use(function(req, res, next){
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     next();
-
+});
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With,x-access-token');
+  res.send(200);
 });
 
 app.use('/', indexRouter);
