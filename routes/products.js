@@ -22,7 +22,9 @@ router.get('/', validateUser, products.getAll);
 function validateUser(req, res, next) {
     jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function(err, decoded) {
       if (err) {
-        res.json({status:"error", message: "You have to identificate yourself" , data:null});
+        res.status(401).json();
+        //es al pedo definir mensaje y respuesta json cuando la respuesta es un status(401)
+        //res.status(401).json({status: "Error" , message: "You have to identificate yourself" , data: null});
       }else{
         // add user id to request
         req.body.userId = decoded.id;
