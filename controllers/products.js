@@ -24,20 +24,20 @@ module.exports = {
            }
        });
       },
-    save: function(req, res, next) {
-        productModel.create({ 
-            name: req.body.name, 
-            sku: req.body.sku, 
-            price: req.body.price 
-        }, function (err, result) {
-            if (err) 
-            next(err);
-            //next('route');
-            else
-            res.status(200).json({status: "success", message: "Product added successfully!!!", data: result
-        });
-            
-        });
+    add: async function(req, res, next) {
+        try{
+            var data = await productModel.create({ 
+                title: req.body.title, 
+                sku: req.body.sku, 
+                price: req.body.price,
+                description: req.body.description,
+                image: req.body.image
+            });
+            res.status(200).json({status: "success", message: "Product added successfully!!!", data: data });
+        }catch(err){
+            res.status(200).json({status: "error", message: "Error to add product!!!", data: err });
+        }
+           
    }
 }
 

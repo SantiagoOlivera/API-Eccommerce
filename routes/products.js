@@ -13,6 +13,7 @@ var jwt = require('jsonwebtoken');
 }); */
 
 router.get('/', validateUser, products.getAll);
+router.post('/add', products.add);
 
 //router.get('/pdf/:productId', products.pdf);
 //router.get('/:id', products.getById);

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 //var childSchema = new Schema({ name: 'string' });
 //Define a schema
 const ProductSchema = new Schema({
- name: {
+ title: {
   type: String,
   trim: true,  
   required: true,
@@ -15,10 +15,19 @@ const ProductSchema = new Schema({
   trim: true,
   required: true
  },
+ description:{
+   type: String,
+   required: false
+ },
  price: {
   type: Number,
   trim: true,
   required: true
+ },
+ image: {
+    type: String,
+    trim: true,
+    required: false
  }
  /* ,
     categoria: {type:Schema.ObjectId, ref:"categorias"},
