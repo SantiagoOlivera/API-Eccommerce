@@ -1,8 +1,9 @@
 //products routes
-var express = require('express');
-var router = express.Router();
 var products = require("../controllers/products")
+var express = require('express');
 var jwt = require('jsonwebtoken');
+var crypto = require('crypto');
+var router = express.Router();
 
 /* GET home page. */
 /* router.get('/', function(req, res, next) {
@@ -13,8 +14,12 @@ var jwt = require('jsonwebtoken');
 }); */
 
 router.get('/', validateUser, products.getAll);
-router.post('/add', products.add);
+router.post('/add' , products.add);
 
+function getProduct(req, res, next){
+  console.log(req.body);
+  next();
+}
 //router.get('/pdf/:productId', products.pdf);
 //router.get('/:id', products.getById);
 //router.post('/', products.save);

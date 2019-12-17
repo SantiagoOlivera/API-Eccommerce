@@ -1,5 +1,5 @@
 var express = require('express');
-const crypto = require('crypto');
+var crypto = require('crypto');
 var router = express.Router();
 
 //require multer for the file uploads
@@ -24,17 +24,22 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('image'); 
 
 router.post('/add', function(req, res, next) {
-    var path = '';
-     upload(req, res, 
-       function (err) {
+  /* var path = ''; */
+  upload(req, res, function (err) {
         if (err) {
           // An error occurred when uploading
           console.log(err);
-          return res.status(422).send("an Error occured")
+          res.status(200).json({status: "error", message: "Error uploding image!"});
         }  
-       // No error occured.
-        path = req.file.path;
-        return res.send("Upload Completed for "+ path); 
+        // No error occured.
+        var data = {
+          path: req.file.path,
+          filename: req.file.filename,
+        }
+        /* path = req.image.path; */
+        var body = req.body;
+        console.log(req.body);
+        res.status(200).json({status: "success", message: "Image added successfully!!!", data: data });
   });     
   
 });
