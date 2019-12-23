@@ -64,32 +64,19 @@ module.exports = {
         }
            
    } */
-   add:  function(req, res, next) {
-        var body;
-        var image;
-        upload(req, res, function (err) {
-            if (err) {
-            // An error occurred when uploading
-                console.log(err);
-                res.status(200).json({status: "error", message: "Error uploding image!"});
-            }  
-            // No error occured.
-            image = {
-                path: req.file.path,
-                filename: req.file.filename,
-            }
-            console.log(req.body.body);
-            product = JSON.parse(req.body.body);
-            console.log(product.title);
-            var data = productModel.create({        
-                title:       product.title, 
-                sku:         product.sku, 
-                price:       product.price,
-                description: product.description,
-                image:       image.filename,
+   add:  async function(req, res, next) {
+        try{
+            var data = await productModel.create({        
+                title:       req.body.title, 
+                sku:         req.body.sku, 
+                price:       req.body.price,
+                description: req.body.description,
+                image:       req.body.image,
             });    
             res.status(200).json({status: "success", message: "Product added successfully!!!", data: data });
-        });
+        }catch(err){
+            res.status(500).json({status: "error", message: "Error to add product!!!", data: err });
+        }
    }
     
 
