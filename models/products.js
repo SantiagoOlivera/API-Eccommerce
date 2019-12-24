@@ -24,8 +24,8 @@ const ProductSchema = new Schema({
   trim: true,
   required: true
  },
- image: {
-    type: String,
+ images: {
+    type: Array,
     trim: true,
     required: false
  }
