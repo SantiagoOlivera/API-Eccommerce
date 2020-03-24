@@ -24,11 +24,7 @@ const ProductSchema = new Schema({
   trim: true,
   required: true
  },
- images: {
-    type: Array,
-    trim: true,
-    required: false
- }
+ images: [],
  /* ,
     categoria: {type:Schema.ObjectId, ref:"categorias"},
     relacionados:[childSchema] 

@@ -65,13 +65,14 @@ module.exports = {
            
    } */
    add:  async function(req, res, next) {
+        console.log(req.body);
         try{
             var data = await productModel.create({        
                 title:       req.body.title, 
                 sku:         req.body.sku, 
                 price:       req.body.price,
                 description: req.body.description,
-                image:       req.body.image,
+                images:       req.body.images,
             });    
             res.status(200).json({status: "success", message: "Product added successfully!!!", data: data });
         }catch(err){
